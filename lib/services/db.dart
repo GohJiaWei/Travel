@@ -85,20 +85,17 @@ class DBService {
     try {
       // Start a transaction
       await conn.transaction((transaction) async {
-        // Insert a new record into the schedule table
-        var result = await transaction.query(
-          'INSERT INTO schedule (User_id) VALUES (?)',
-          [1], // Set User_id to 1
-        );
+        await transaction.query('DELETE FROM location_schedule');
 
-        // Retrieve the auto-incremented Schedule_id
-        int? newScheduleId = result.insertId;
+        // Delete from the schedule table
+        await transaction.query('DELETE FROM schedule');
+        await transaction.query('INSERT INTO schedule VALUES (1,1)');
 
         // Insert records into the location_schedule table
         for (int locId in locationIds) {
           await transaction.query(
             'INSERT INTO location_schedule (Loc_id, Schedule_id) VALUES (?, ?)',
-            [locId, newScheduleId],
+            [locId, 1],
           );
         }
       });
@@ -164,19 +161,25 @@ class DBService {
       takenBackList.add(row['Loc_id'] as int);
     }
 
-
     // Produce a list of integers in idAdded but not in takenBackList
-    List<int> availableList = idAdded.where((id) => !takenBackList.contains(id)).toList();
+    List<int> availableList =
+        idAdded.where((id) => !takenBackList.contains(id)).toList();
 
     int deleteAndAdded = takenBackList.length - 3;
     var results2 = await conn.query(
         'DELETE FROM location_schedule WHERE Schedule_id = ? AND Loc_id IN (?, ?, ?, ?)',
-        [Schedule_id, takenBackList[3], takenBackList[4], takenBackList[5], takenBackList[6]]);
+        [
+          Schedule_id,
+          takenBackList[3],
+          takenBackList[4],
+          takenBackList[5],
+          takenBackList[6]
+        ]);
 
-    for(int i = 0; i<4 ; i++){
+    for (int i = 0; i < 4; i++) {
       var results3 = await conn.query(
           'INSERT INTO location_schedule VALUES(?, ?, 1)',
-          [ availableList[i], Schedule_id]);
+          [availableList[i], Schedule_id]);
     }
 
     await conn.close();
