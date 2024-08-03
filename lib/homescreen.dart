@@ -7,7 +7,8 @@ import 'package:travel/translator/translator.dart';
 import 'package:travel/wishlist/wishlist.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  int id;
+  HomeScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -47,12 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
             _selectedIndex = index;
           });
         },
-        children: const <Widget>[
-          HomePage(),
-          SchedulePage(),
-          TranslatorPage(),
-          WishlistPage(),
-          ChatBotPage()
+        children: <Widget>[
+          HomePage(id: widget.id, key: ValueKey('homePage')),
+          SchedulePage(id: widget.id, key: ValueKey('schedulePage')),
+          TranslatorPage(key: ValueKey('translatorPage')),
+          WishlistPage(key: ValueKey('wishlistPage')),
+          ChatBotPage(key: ValueKey('chatBotPage'))
         ],
       ),
       bottomNavigationBar: CurvedNavBar(

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:travel/pages/filter.dart';
-import '/services/db.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +19,8 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  int id;
+  HomePage({super.key, required this.id});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -199,13 +199,7 @@ class _HomePageState extends State<HomePage> {
                       final imagePath = _imagePaths[index];
                       return Container(
                         margin: EdgeInsets.symmetric(horizontal: 20.0),
-                        // decoration: BoxDecoration(
-                        //   border: Border.all(
-                        //   color: Colors.black, // Outline color
-                        //   width: 1.0, // Outline width
-                        // ),),
                         child: ClipRRect(
-                          // borderRadius: BorderRadius.circular(12.0),
                           child: Image.asset(
                             imagePath,
                             fit: BoxFit.cover,
@@ -256,16 +250,16 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   VenueCard(
-                    imageUrl: 'images/login.png',
-                    name: 'Batu Ferringhi, Penang',
-                  ),
-                  VenueCard(
-                    imageUrl: 'images/login.png',
-                    name: 'Sg. Siput, Perak',
-                  ),
-                  VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/TiomanIsland.jpg',
                     name: 'Pulau Tioman, Pahang',
+                  ),
+                  VenueCard(
+                    imageUrl: 'images/KekLongTong.jpg',
+                    name: 'Kek Lok Tong Cave Temple, Ipoh',
+                  ),
+                  VenueCard(
+                    imageUrl: 'images/BatuFerringhi.jpg',
+                    name: 'Batu Ferringhi, Penang',
                   ),
                 ],
               ),
@@ -284,15 +278,15 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/AFamosa.jpg',
                     name: 'A Famosa',
                   ),
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/RiverWalk.jpg',
                     name: 'River Walk',
                   ),
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/NyonyaVillage.jpg',
                     name: 'Nyonya Village Melaka',
                   ),
                 ],
@@ -336,7 +330,7 @@ class _VenueCardState extends State<VenueCard> {
   Widget build(BuildContext context) {
     // Get the screen width and height from MediaQuery
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    // final screenHeight = MediaQuery.of(context).size.height;
 
     // Set a fixed width for the container as a percentage of the screen width
     final containerWidth =

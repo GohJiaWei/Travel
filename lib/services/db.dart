@@ -15,22 +15,27 @@ class DBService {
     return await MySqlConnection.connect(settings);
   }
 
-  Future<bool> authenticateUser(String email, String password) async {
+  Future<int> authenticateUser(String email, String password) async {
     var conn = await openConnection();
-    var results =
-        await conn.query('SELECT password FROM users WHERE email = ?', [email]);
+    var results = await conn
+        .query('SELECT id, password FROM users WHERE email = ?', [email]);
 
     await conn.close();
 
     if (results.isEmpty) {
-      return false;
+      return 0;
     }
 
     var hashedPassword = results.first['password'];
     var bytes = utf8.encode(password);
     var digest = sha256.convert(bytes);
 
-    return digest.toString() == hashedPassword;
+    if (digest.toString() == hashedPassword) {
+      print(results.first['id']);
+      return results.first['id'];
+    } else {
+      return 0;
+    }
   }
 
   Future<void> registerUser(
@@ -104,5 +109,21 @@ class DBService {
     } finally {
       await conn.close();
     }
+  }
+
+  Future<Results> fetchTag() async {
+    var conn = await openConnection();
+    var results = await conn.query('SELECT * FROM tag');
+    await conn.close();
+    return results;
+  }
+
+  Future<Results> fetchSchedule(int id) async {
+    var conn = await openConnection();
+    var results = await conn.query(
+        'SELECT l.Name, l.Cost, l.Longitude, l.Latitude FROM location l JOIN location_schedule ls ON l.Loc_id = ls.Loc_id WHERE ls.Schedule_id = ( SELECT Schedule_id FROM schedule WHERE User_id = 116);',
+        [id]);
+    await conn.close();
+    return results;
   }
 }

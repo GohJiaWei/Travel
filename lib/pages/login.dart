@@ -19,14 +19,14 @@ class _LoginScreenState extends State<LoginScreen> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
-      bool success = await _dbService.authenticateUser(email, password);
+      int userId = await _dbService.authenticateUser(email, password);
 
-      if (success) {
+      if (userId != 0) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Login successful')));
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => HomeScreen(id: 116,)),
         );
       } else {
         ScaffoldMessenger.of(context)
