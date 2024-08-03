@@ -79,7 +79,6 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return MultiSelectDialog(
-          tags: _tags,
           selectedTags: _selectedTags,
           tripBudget: _tripBudget,
           hotelBudget: _hotelBudget,

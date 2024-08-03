@@ -121,9 +121,67 @@ class DBService {
   Future<Results> fetchSchedule(int id) async {
     var conn = await openConnection();
     var results = await conn.query(
-        'SELECT l.Name, l.Cost, l.Longitude, l.Latitude FROM location l JOIN location_schedule ls ON l.Loc_id = ls.Loc_id WHERE ls.Schedule_id = ( SELECT Schedule_id FROM schedule WHERE User_id = 116);',
+        'SELECT l.Name, l.Cost, l.Longitude, l.Latitude, l.Loc_id, ls.Schedule_id FROM location l JOIN location_schedule ls ON l.Loc_id = ls.Loc_id WHERE ls.Schedule_id = ( SELECT Schedule_id FROM schedule WHERE User_id = ?);',
         [id]);
     await conn.close();
+    return results;
+  }
+
+  Future<Results> fetchDescription(int Loc_id) async {
+    var conn = await openConnection();
+    var results = await conn.query(
+        'SELECT Name, Description, Cost, Review, start_time, end_time FROM location WHERE Loc_id = ?',
+        [Loc_id]);
+    await conn.close();
+    return results;
+  }
+
+  Future<Results> deleteLocation(int Loc_id, int Schedule_id) async {
+    var conn = await openConnection();
+    var results = await conn.query(
+        'DELETE FROM location_schedule WHERE Loc_id = ? AND Schedule_id = ?',
+        [Loc_id, Schedule_id]);
+    await conn.close();
+    return results;
+  }
+
+  Future<Results> addLocation(int Loc_id, int Schedule_id) async {
+    var conn = await openConnection();
+    var results = await conn.query(
+        'INSERT INTO location_schedule VALUES (?, ?, 1)',
+        [Loc_id, Schedule_id]);
+    await conn.close();
+    return results;
+  }
+
+  Future<Results> replanning(int Schedule_id) async {
+    var conn = await openConnection();
+    List<int> idAdded = List.generate(18, (index) => index + 1);
+    var results = await conn.query(
+        'SELECT Loc_id FROM location_schedule WHERE Schedule_id = ?',
+        [Schedule_id]);
+    List<int> takenBackList = [];
+    for (var row in results) {
+      takenBackList.add(row['Loc_id'] as int);
+    }
+
+
+    // Produce a list of integers in idAdded but not in takenBackList
+    List<int> availableList = idAdded.where((id) => !takenBackList.contains(id)).toList();
+
+    int deleteAndAdded = takenBackList.length - 3;
+    var results2 = await conn.query(
+        'DELETE FROM location_schedule WHERE Schedule_id = ? AND Loc_id IN (?, ?, ?, ?)',
+        [Schedule_id, takenBackList[3], takenBackList[4], takenBackList[5], takenBackList[6]]);
+
+    for(int i = 0; i<4 ; i++){
+      var results3 = await conn.query(
+          'INSERT INTO location_schedule VALUES(?, ?, 1)',
+          [ availableList[i], Schedule_id]);
+    }
+
+    await conn.close();
+
     return results;
   }
 }
