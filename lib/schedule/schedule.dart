@@ -41,7 +41,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
   @override
   Widget build(BuildContext context) {
-    double total = 0.0;
+    double total = 0;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -71,6 +71,8 @@ class _SchedulePageState extends State<SchedulePage> {
                       'Loc_id': row['Loc_id']
                     });
                     total += row['Cost'];
+
+                    print(total);
                   }
                   return Column(
                     children: [
@@ -180,10 +182,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   child: ListTile(
                                                     leading: Image.asset(
                                                       locations[index]['Loc_id'] == 6 || locations[index]['Loc_id'] == 10 ?
-                                                      'images/${locations[index]['Loc_id']}.jpeg' :
+                                                      'images/loc_img1/${locations[index]['Loc_id']}.jpeg' :
                                                       locations[index]['Loc_id'] == 9 ?
-                                                      'images/${locations[index]['Loc_id']}.JPG'
-                                                          :'images/${locations[index]['Loc_id']}.jpg',
+                                                      'images/loc_img1/${locations[index]['Loc_id']}.JPG'
+                                                          :'images/loc_img1/${locations[index]['Loc_id']}.jpg',
                                                       width:
                                                           175.0, // Width of the image
                                                       height:
@@ -275,10 +277,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                               child: ListTile(
                                                 leading: Image.asset(
                                                   locations[index]['Loc_id'] == 6 || locations[index]['Loc_id'] == 10 ?
-                                                  'images/loc_img1/${locations[0]['Name'].replaceAll(' ', '')}.jpeg' :
+                                                  'images/loc_img1/${locations[index]['Loc_id']}.jpeg' :
                                                   locations[index]['Loc_id'] == 9 ?
-                                                  'images/loc_img1/${locations[0]['Name'].replaceAll(' ', '')}.JPG'
-                                                  :'images/loc_img1/${locations[0]['Name'].replaceAll(' ', '')}.jpg',
+                                                  'images/loc_img1/${locations[index]['Loc_id']}.JPG'
+                                                      :'images/loc_img1/${locations[index]['Loc_id']}.jpg',
                                                   width:
                                                       175.0, // Width of the image
                                                   height:
@@ -288,9 +290,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 ),
                                                 title: Text(
                                                     locations[index]['Name']),
-                                                subtitle: Text(locations[index]
-                                                        ['Cost']
-                                                    .toString()),
+                                                subtitle: Text('RM ${locations[index]['Cost']
+                                                    .toString()}'),
                                               ),
                                             ),
                                           ),

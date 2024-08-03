@@ -55,6 +55,7 @@ class _DescriptionState extends State<Description> {
                         'Review': row['Review'],
                         'start_time': row['start_time'],
                         'end_time': row['end_time'],
+                        'Loc_id': row['Loc_id'],
                       });
                     }
                     return Column(
@@ -121,10 +122,7 @@ class _DescriptionState extends State<Description> {
                                   Row(
                                     children: [
                                       SizedBox(width: 5,),
-                                      Text(
-                                        "${formatTime(location[0]['start_time'].toString())} -${formatTime(location[0]['end_time'].toString())}",
-                                        style: TextStyle(fontSize: 22),
-                                      ),
+
                                       Spacer(),
                                       IconButton(
                                         icon: Icon(
