@@ -63,8 +63,8 @@ class _TranslatorPageState extends State<TranslatorPage> {
       inputLanguageSymbol = "en";
     } else if (inputLanguage == "Malay") {
       inputLanguageSymbol = "ms";
-    } else if (inputLanguage == "Chinese") {
-      inputLanguageSymbol = "zh-CN";
+    } else if (inputLanguage == "Arabic") {
+      inputLanguageSymbol = "ar";
     } else if (inputLanguage == "French") {
       inputLanguageSymbol = "fr";
     } else if (inputLanguage == "Korean") {
@@ -77,8 +77,8 @@ class _TranslatorPageState extends State<TranslatorPage> {
       outputLanguageSymbol = "en";
     } else if (outputLanguage == "Malay") {
       outputLanguageSymbol = "ms";
-    } else if (outputLanguage == "Chinese") {
-      outputLanguageSymbol = "zh-CN";
+    } else if (outputLanguage == "Arabric") {
+      outputLanguageSymbol = "ar";
     } else if (outputLanguage == "French") {
       outputLanguageSymbol = "fr";
     } else if (outputLanguage == "Korean") {
