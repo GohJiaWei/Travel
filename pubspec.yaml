@@ -37,6 +37,8 @@ dependencies:
   mysql1: ^0.20.0
   crypto: ^3.0.3
   curved_navigation_bar: ^1.0.6
+  translator: ^1.0.0
+  speech_to_text: ^6.6.2
 
 dev_dependencies:
   flutter_test:
