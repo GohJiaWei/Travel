@@ -16,18 +16,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   late int _currentPage;
-  List<String> _tags = [
-    'Nature',
-    'Fun',
-    'Culture',
-    'Music',
-    'Interactive',
-    'Food',
-    'History',
-    'Entertainment',
-    'Outdoor',
-    'Indoor'
-  ];
   List<String> _selectedTags = [];
   double _tripBudget = 1000.0;
   double _hotelBudget = 500.0;
@@ -78,7 +66,6 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return MultiSelectDialog(
-          tags: _tags,
           selectedTags: _selectedTags,
           tripBudget: _tripBudget,
           hotelBudget: _hotelBudget,

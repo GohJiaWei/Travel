@@ -68,7 +68,7 @@ class DBService {
 
   Future<Results> fetchSchedule(int id) async {
     var conn = await openConnection();
-    var results = await conn.query('SELECT l.Name, l.Cost, l.Longitude, l.Latitude FROM location l JOIN location_schedule ls ON l.Loc_id = ls.Loc_id WHERE ls.Schedule_id = ( SELECT Schedule_id FROM schedule WHERE User_id = 116);',
+    var results = await conn.query('SELECT l.Name, l.Cost, l.Longitude, l.Latitude FROM location l JOIN location_schedule ls ON l.Loc_id = ls.Loc_id WHERE ls.Schedule_id = ( SELECT Schedule_id FROM schedule WHERE User_id = ?);',
         [id]);
     await conn.close();
     return results;

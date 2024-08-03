@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:travel/services/db.dart';
 
 class MultiSelectDialog extends StatefulWidget {
-  final List<String> tags;
   final List<String> selectedTags;
   final double tripBudget;
   final double hotelBudget;
@@ -10,7 +10,6 @@ class MultiSelectDialog extends StatefulWidget {
   final DateTime? endDate;
 
   MultiSelectDialog({
-    required this.tags,
     required this.selectedTags,
     required this.tripBudget,
     required this.hotelBudget,
@@ -30,6 +29,7 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
   String? _selectedState;
   DateTime? _startDate;
   DateTime? _endDate;
+  DBService db = DBService();
 
   @override
   void initState() {
@@ -203,29 +203,45 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
               ),
             ),
             SizedBox(height: 13.0),
-            Wrap(
-              spacing: 10.0, // Add space between tags horizontally
-              runSpacing: 10.0, // Add space between tags vertically
-              children: widget.tags.map((tag) {
-                return FilterChip(
-                  label: Text(
-                    tag,
-                    style: TextStyle(
-                      fontSize: 15.0, // Adjust the font size here
-                    ),
-                  ),
-                  selected: _selectedTags.contains(tag),
-                  onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        _selectedTags.add(tag);
-                      } else {
-                        _selectedTags.remove(tag);
-                      }
+            FutureBuilder(
+                future: db.fetchTag(),
+                builder: (context, snapshot){
+
+                  final data = snapshot.data;
+                  if (data == null || data.isEmpty) {
+                    return CircularProgressIndicator();
+                  }
+                  List<Map<String, dynamic>> tags = [];
+                  for (var row in data!) {
+                    tags.add({
+                      'name': row['Tag_name'],
                     });
-                  },
-                );
-              }).toList(),
+                  }
+                  return Wrap(
+                    spacing: 10.0,
+                    runSpacing: 10.0,
+                    children: tags.map((tag) {
+                      return FilterChip(
+                        label: Text(
+                          tag['name'],
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
+                        selected: _selectedTags.contains(tag['name']),
+                        onSelected: (bool selected) {
+                          setState(() {
+                            if (selected) {
+                              _selectedTags.add(tag['name']);
+                            } else {
+                              _selectedTags.remove(tag['name']);
+                            }
+                          });
+                        },
+                      );
+                    }).toList(), // Convert Iterable to List
+                  );
+                }
             ),
             SizedBox(height: 20),
 
