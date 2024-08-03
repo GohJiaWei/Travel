@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   mysql1: ^0.20.0
   crypto: ^3.0.3
+  curved_navigation_bar: ^1.0.6
 
 dev_dependencies:
   flutter_test:
