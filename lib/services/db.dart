@@ -121,8 +121,7 @@ class DBService {
   Future<Results> fetchSchedule(int id) async {
     var conn = await openConnection();
     var results = await conn.query(
-        'SELECT l.Name, l.Cost, l.Longitude, l.Latitude, l.Loc_id, ls.Schedule_id FROM location l JOIN location_schedule ls ON l.Loc_id = ls.Loc_id WHERE ls.Schedule_id = ( SELECT Schedule_id FROM schedule WHERE User_id = ?);',
-        [id]);
+        'SELECT l.Name, l.Cost, l.Longitude, l.Latitude, l.Loc_id, ls.Schedule_id FROM location l JOIN location_schedule ls ON l.Loc_id = ls.Loc_id WHERE ls.Schedule_id = 1;');
     await conn.close();
     return results;
   }
@@ -130,7 +129,7 @@ class DBService {
   Future<Results> fetchDescription(int Loc_id) async {
     var conn = await openConnection();
     var results = await conn.query(
-        'SELECT Name, Description, Cost, Review, start_time, end_time FROM location WHERE Loc_id = ?',
+        'SELECT Name, Description, Cost, Review, start_time, end_time, Loc_id FROM location WHERE Loc_id = ?',
         [Loc_id]);
     await conn.close();
     return results;

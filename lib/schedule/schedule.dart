@@ -178,8 +178,12 @@ class _SchedulePageState extends State<SchedulePage> {
                                                       vertical: 12,
                                                       horizontal: 8),
                                                   child: ListTile(
-                                                    leading: Image.network(
-                                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYArSfFlMh4VhBz3tYLefzqGLnDtzeSulxxQ&s',
+                                                    leading: Image.asset(
+                                                      locations[index]['Loc_id'] == 6 || locations[index]['Loc_id'] == 10 ?
+                                                      'images/${locations[index]['Loc_id']}.jpeg' :
+                                                      locations[index]['Loc_id'] == 9 ?
+                                                      'images/${locations[index]['Loc_id']}.JPG'
+                                                          :'images/${locations[index]['Loc_id']}.jpg',
                                                       width:
                                                           175.0, // Width of the image
                                                       height:
@@ -269,8 +273,12 @@ class _SchedulePageState extends State<SchedulePage> {
                                                       vertical: 12,
                                                       horizontal: 8),
                                               child: ListTile(
-                                                leading: Image.network(
-                                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYArSfFlMh4VhBz3tYLefzqGLnDtzeSulxxQ&s',
+                                                leading: Image.asset(
+                                                  locations[index]['Loc_id'] == 6 || locations[index]['Loc_id'] == 10 ?
+                                                  'images/loc_img1/${locations[0]['Name'].replaceAll(' ', '')}.jpeg' :
+                                                  locations[index]['Loc_id'] == 9 ?
+                                                  'images/loc_img1/${locations[0]['Name'].replaceAll(' ', '')}.JPG'
+                                                  :'images/loc_img1/${locations[0]['Name'].replaceAll(' ', '')}.jpg',
                                                   width:
                                                       175.0, // Width of the image
                                                   height:

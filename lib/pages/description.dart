@@ -70,8 +70,12 @@ class _DescriptionState extends State<Description> {
                                   bottomLeft: Radius.circular(20.0),
                                   bottomRight: Radius.circular(20.0),
                                 ),
-                                child: Image.network(
-                                  image,
+                                child: Image.asset(
+                                  location[0]['Loc_id'] == 6 || location[0]['Loc_id'] == 10 ?
+                                  'images/loc_img1/${location[0]['Loc_id']}.jpeg' :
+                                  location[0]['Loc_id'] == 9 ?
+                                  'images/loc_img1/${location[0]['Loc_id']}.JPG'
+                                      :'images/loc_img1/${location[0]['Loc_id']}.jpg',
                                   fit: BoxFit.cover,
                                 ),
                               ),
