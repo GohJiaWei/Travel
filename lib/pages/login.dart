@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel/homescreen.dart';
 import '/services/db.dart';
 import 'signup.dart';
 import 'home.dart'; // Import home.dart
@@ -38,9 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 40.0, horizontal: 30.0),
