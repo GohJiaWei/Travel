@@ -112,7 +112,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                       style: TextStyle(fontSize: 20),
                                     ),
                                     Dismissible(
-                                      key: Key(_items[index]
+                                      key: Key(locations[index]['Name']
                                           .toString()), // Unique key for each item
                                       direction: DismissDirection
                                           .startToEnd, // Swipe direction
@@ -211,7 +211,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                 );
                               } else {
                                 return Dismissible(
-                                  key: Key(_items[index]
+                                  key: Key(locations[index]['Name']
                                       .toString()), // Unique key for each item
                                   direction: DismissDirection
                                       .startToEnd, // Swipe direction
@@ -272,7 +272,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      vertical: 12,
+                                                      vertical: 0,
                                                       horizontal: 8),
                                               child: ListTile(
                                                 leading: Image.asset(
