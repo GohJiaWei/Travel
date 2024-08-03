@@ -4,22 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:travel/pages/filter.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
-}
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  int id;
+  HomePage({super.key, required this.id});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -170,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                   child: PageView.builder(
                     controller: _pageController,
                     itemCount:
-                        _imagePaths.length, // Use length of imagePaths list
+                    _imagePaths.length, // Use length of imagePaths list
                     onPageChanged: (index) {
                       setState(() {
                         _currentPage = index;
@@ -339,7 +327,7 @@ class _VenueCardState extends State<VenueCard> {
               widget.imageUrl,
               width: containerWidth, // Make the image fill the container width
               height:
-                  imageHeight, // Set the height as a proportion of the container width
+              imageHeight, // Set the height as a proportion of the container width
               fit: BoxFit.cover,
             ),
             Padding(
@@ -359,7 +347,7 @@ class _VenueCardState extends State<VenueCard> {
                     child: Text(
                       widget.name,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       overflow: TextOverflow.visible, // Allows text to wrap
                       softWrap: true, // Enables text wrapping
                     ),
