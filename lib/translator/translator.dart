@@ -52,6 +52,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
   void onSpeechResult(result) {
     setState(() {
       wordSpoken = "${result.recognizedWords}";
+      translateText();
     });
   }
 
@@ -75,7 +76,6 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   } else {
                     startListening();
                   }
-                  translateText();
                 },
                 onLongPressCancel: () {},
                 child: CircleAvatar(
