@@ -14,17 +14,17 @@ class _TranslatorPageState extends State<TranslatorPage> {
   final translator = GoogleTranslator();
   final SpeechToText speechToText = SpeechToText();
 
-  String inputText = '';
   String inputLanguage = 'en';
   String outputLanguage = 'en';
-  String wordSpoken = 'Yeah';
+  String wordSpoken = '';
+  String translatedText = '';
   bool speechEnabled = false;
 
   Future<void> translateText() async {
-    final translated = await translator.translate(inputText,
+    final translated = await translator.translate(wordSpoken,
         from: inputLanguage, to: outputLanguage);
     setState(() {
-      outputController.text = translated.text;
+      translatedText = translated.text;
     });
   }
 
@@ -75,6 +75,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   } else {
                     startListening();
                   }
+                  translateText();
                 },
                 onLongPressCancel: () {},
                 child: CircleAvatar(
@@ -130,7 +131,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   ),
                 ],
               ),
-              Text(wordSpoken),
+              Text(translatedText),
             ],
           ),
         ),
