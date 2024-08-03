@@ -131,6 +131,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   ),
                 ],
               ),
+              Text(wordSpoken),
               Text(translatedText),
             ],
           ),
