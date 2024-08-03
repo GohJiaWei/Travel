@@ -94,154 +94,142 @@ class _TranslatorPageState extends State<TranslatorPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        scrollDirection: axisDirectionToAxis(AxisDirection.down),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                if (speechToText.isListening) {
-                  stopListening();
-                } else {
-                  startListening();
-                }
-              },
-              onLongPressCancel: () {},
-              child: CircleAvatar(
-                radius: 95,
-                child: Icon(
-                  Icons.mic_rounded,
-                  size: 80,
-                ),
+      body: Column(
+        children: [
+          // Container for the translated text at the top
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              color: Color(0xff97AFB8),
+            ),
+            width: MediaQuery.of(context).size.width * 0.80,
+            height: MediaQuery.of(context).size.height * 0.20,
+            margin: EdgeInsets.all(20), // Add margin for spacing
+            child: Center(
+              child: Text(
+                translatedText,
+                style: TextStyle(fontSize: 20),
               ),
             ),
-            SizedBox(height: 20),
-            Text(speechToText.isListening
-                ? "Listening..."
-                : speechEnabled
-                    ? "Tap the microphone to start listening..."
-                    : "Speech not available"),
-            SizedBox(height: 20),
-            Row(
+          ),
+          // SizedBox to adjust space between translated text and mic area
+          // Adjust this value as needed
+          // Expanded area for mic and spoken text
+          Expanded(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DropdownButton<String>(
-                  value: inputLanguage,
-                  items: <String>[
-                    'English',
-                    'Malay',
-                    'Chinese',
-                    'French',
-                    'Korean',
-                    'Hindi'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      inputLanguage = newValue!;
-                      changeLanguageToSymbol();
-                    });
-                  },
+                SizedBox(height: 30),
+                // Row with microphone icon and dropdown menus
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Dropdown for input language
+                    DropdownButton<String>(
+                      value: inputLanguage,
+                      
+                      items: <String>[
+                        'English',
+                        'Malay',
+                        'Arabic',
+                        'French',
+                        'Korean',
+                        'Hindi'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          inputLanguage = newValue!;
+                          changeLanguageToSymbol();
+                        });
+                      },
+                    ),
+                    SizedBox(width: 20),
+                    // Mic button
+                    GestureDetector(
+                      onTap: () {
+                        if (speechToText.isListening) {
+                          stopListening();
+                        } else {
+                          startListening();
+                        }
+                      },
+                      onLongPressCancel: () {},
+                      child: CircleAvatar(
+                        radius: 55,
+                        child: Icon(
+                          Icons.mic_rounded,
+                          size: 60,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    // Dropdown for output language
+                    DropdownButton<String>(
+                      value: outputLanguage,
+                      items: <String>[
+                        'English',
+                        'Malay',
+                        'Arabic',
+                        'French',
+                        'Korean',
+                        'Hindi'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          outputLanguage = newValue!;
+                          changeLanguageToSymbol();
+                        });
+                      },
+                    ),
+                  ],
                 ),
-                SizedBox(width: 20),
-                Icon(Icons.arrow_forward_rounded),
-                SizedBox(width: 20),
-                DropdownButton<String>(
-                  value: outputLanguage,
-                  items: <String>[
-                    'English',
-                    'Malay',
-                    'Chinese',
-                    'French',
-                    'Korean',
-                    'Hindi'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      outputLanguage = newValue!;
-                      changeLanguageToSymbol();
-                    });
-                  },
+                SizedBox(height: 20),
+                // Row with listening status text
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      speechToText.isListening
+                          ? "Listening..."
+                          : speechEnabled
+                              ? "Tap the microphone to start listening..."
+                              : "Speech not available",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
                 ),
+                SizedBox(height: 20),
+                // Container for the spoken text at the bottom
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Color(0xff97AFB8),
+                  ),
+                  width: MediaQuery.of(context).size.width * 0.80,
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  margin: EdgeInsets.all(20), // Add margin for spacing
+                  child: Center(
+                    child: Text(
+                      wordSpoken,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 100),
               ],
             ),
-            SizedBox(height: 20),
-            Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Color(0xff97AFB8),
-                ),
-                width: MediaQuery.of(context).size.width * 0.80,
-                height: MediaQuery.of(context).size.height * 0.16,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.all(5.0),
-                        //   child: Text(
-                        //     inputLanguage,
-                        //     style: TextStyle(
-                        //         fontSize: 15, fontWeight: FontWeight.w400),
-                        //   ),
-                        // ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            wordSpoken,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            SizedBox(height: 30),
-            Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Color(0xff97AFB8),
-                ),
-                width: MediaQuery.of(context).size.width * 0.80,
-                height: MediaQuery.of(context).size.height * 0.16,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.all(5.0),
-                        //   child: Text(
-                        //     inputLanguage,
-                        //     style: TextStyle(
-                        //         fontSize: 15, fontWeight: FontWeight.w400),
-                        //   ),
-                        // ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            translatedText,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
