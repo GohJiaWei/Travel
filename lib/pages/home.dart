@@ -28,7 +28,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   late int _currentPage;
-  List<String> _tags = ['Nature', 'Luxury', 'Adventure', 'Relaxation'];
+  List<String> _tags = [
+    'Nature',
+    'Fun',
+    'Culture',
+    'Music',
+    'Interactive',
+    'Food',
+    'History',
+    'Entertainment',
+    'Outdoor',
+    'Indoor'
+  ];
   List<String> _selectedTags = [];
   double _tripBudget = 1000.0;
   double _hotelBudget = 500.0;
@@ -312,7 +323,7 @@ class _VenueCardState extends State<VenueCard> {
   Widget build(BuildContext context) {
     // Get the screen width and height from MediaQuery
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    // final screenHeight = MediaQuery.of(context).size.height;
 
     // Set a fixed width for the container as a percentage of the screen width
     final containerWidth =
