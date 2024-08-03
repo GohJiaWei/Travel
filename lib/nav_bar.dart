@@ -90,4 +90,5 @@ const List<Map<String, dynamic>> _navBarItems = [
   {'icon': Icons.timeline_outlined, 'label': 'Schedule'},
   {'icon': Icons.mic, 'label': 'Translator'},
   {'icon': Icons.favorite_border, 'label': 'Wishlist'},
+  {'icon': Icons.smart_toy, 'label': 'AI Chat Bot'},
 ];

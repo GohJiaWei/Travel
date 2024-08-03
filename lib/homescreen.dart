@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel/chatbot/chatbot.dart';
 import 'package:travel/nav_bar.dart';
 import 'package:travel/pages/home.dart';
 import 'package:travel/schedule/schedule.dart';
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SchedulePage(),
           TranslatorPage(),
           WishlistPage(),
+          ChatBotPage()
         ],
       ),
       bottomNavigationBar: CurvedNavBar(
