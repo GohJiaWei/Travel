@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -31,9 +30,9 @@ class _HomePageState extends State<HomePage> {
 
   // List of image paths
   final List<String> _imagePaths = [
-    'images/ad 1.avif',
-    'images/ad 2.avif',
-    'images/ad 3.avif',
+    'images/advertisement1.jpeg',
+    'images/advertisement2.jpeg',
+    'images/advertisement3.jpeg',
   ];
 
   @override
@@ -71,6 +70,7 @@ class _HomePageState extends State<HomePage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      // backgroundColor: Colors.grey[300],
       appBar: AppBar(
         backgroundColor: Color(0xFF97AFB8),
         title: Padding(
@@ -116,85 +116,90 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Stack(
-            //   alignment: Alignment.center,
-            //   children: [
-            //     // Add a PageView for horizontal scrolling
-            //     Container(
-            //       height: screenWidth * 0.5, // Adjust height as needed
-            //       child: PageView.builder(
-            //         controller: _pageController,
-            //         itemCount: _imagePaths.length, // Use length of imagePaths list
-            //         onPageChanged: (index) {
-            //           setState(() {
-            //             _currentPage = index;
-            //           });
-            //         },
-            //         itemBuilder: (context, index) {
-            //           // Use local images from assets
-            //           final imagePath = _imagePaths[index];
-            //           return Container(
-            //             margin: EdgeInsets.symmetric(horizontal: 8.0),
-            //             child: ClipRRect(
-            //               borderRadius: BorderRadius.circular(12.0),
-            //               child: Image.asset(
-            //                 imagePath,
-            //                 fit: BoxFit.cover,
-            //                 width: screenWidth * 0.8, // Adjust width as needed
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     ),
-            //     // Add a circular bullet indicator at the bottom center
-            //     Positioned(
-            //       bottom: 10,
-            //       child: Container(
-            //         height: 20,
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.center,
-            //           children: List.generate(_imagePaths.length, (index) {
-            //             return Container(
-            //               margin: EdgeInsets.symmetric(horizontal: 4.0),
-            //               width: 10,
-            //               height: 10,
-            //               decoration: BoxDecoration(
-            //                 shape: BoxShape.circle,
-            //                 color: _currentPage == index ? Colors.blue : Colors.grey,
-            //               ),
-            //             );
-            //           }),
-            //         ),
-            //       ),
-            //     ),
+            SizedBox(height: 20,),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                // Add a PageView for horizontal scrolling
+                Container(
+                  height: screenWidth * 0.5, // Adjust height as needed
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _imagePaths.length, // Use length of imagePaths list
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      // Use local images from assets
+                      final imagePath = _imagePaths[index];
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20.0),
+                        // decoration: BoxDecoration(
+                        //   border: Border.all(
+                        //   color: Colors.black, // Outline color
+                        //   width: 1.0, // Outline width
+                        // ),),
+                        child: ClipRRect(
+                          
+                          // borderRadius: BorderRadius.circular(12.0),
+                          child: Image.asset(
+                            imagePath,
+                            fit: BoxFit.cover,
+                            width: screenWidth * 0.8, // Adjust width as needed
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                // Add a circular bullet indicator at the bottom center
+                Positioned(
+                  bottom: 10,
+                  child: Container(
+                    height: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(_imagePaths.length, (index) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 4.0),
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentPage == index ? Colors.blue : Colors.grey,
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
 
-            //   ],
-            // ),
+              ],
+            ),
             // Venue Cards
+            SizedBox(height: 30,),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text('Top Picks', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
             Container(
-              height: 250,
+              height: 200,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
                   VenueCard(
-                    imageUrl: 'assets/venue1.jpg',
-                    name: 'Venue 1',
-                    rating: 4.5,
+                    imageUrl: 'images/login.png',
+                    name: 'Batu Ferringhi, Penang',
                   ),
                   VenueCard(
-                    imageUrl: 'assets/venue2.jpg',
-                    name: 'Venue 2',
-                    rating: 4.0,
+                    imageUrl: 'images/login.png',
+                    name: 'Sg. Siput, Perak',
                   ),
                   VenueCard(
-                    imageUrl: 'assets/venue3.jpg',
-                    name: 'Venue 3',
-                    rating: 4.8,
+                    imageUrl: 'images/login.png',
+                    name: 'Pulau Tioman,',
                   ),
                 ],
               ),
@@ -206,29 +211,64 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class VenueCard extends StatelessWidget {
+class VenueCard extends StatefulWidget {
   final String imageUrl;
   final String name;
-  final double rating;
 
-  VenueCard({required this.imageUrl, required this.name, required this.rating});
+  VenueCard({required this.imageUrl, required this.name});
+
+  @override
+  State<VenueCard> createState() => _VenueCardState();
+}
+
+class _VenueCardState extends State<VenueCard> {
+  bool isFavorited = false;
+
+  void toggleFavorite() {
+    setState(() {
+      isFavorited = !isFavorited;
+      if (isFavorited) {
+        print('Added ${widget.name} to collection');
+      } else {
+        print('Removed ${widget.name} from collection');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(imageUrl, width: 160, height: 120, fit: BoxFit.cover),
+          Image.asset(widget.imageUrl,
+              width: 165, height: 140, fit: BoxFit.cover),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text('Rating: $rating', style: TextStyle(color: Colors.grey[600])),
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: toggleFavorite,
+                  icon: Icon(
+                    isFavorited
+                        ? Icons.favorite
+                        : Icons.favorite_outline_outlined,
+                    color: isFavorited ? Colors.red : Colors.grey,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    widget.name,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis, // Clip text overflow
+                    maxLines: 1, // Set max number of lines
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
