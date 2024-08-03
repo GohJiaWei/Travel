@@ -115,7 +115,7 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
               ),
             ),
             Text(
-              'Trip Budget: \$${_tripBudget.toStringAsFixed(0)}',
+              'Trip Budget: \RM ${_tripBudget.toStringAsFixed(0)}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 19.0, // Adjust the font weight
@@ -255,7 +255,7 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
               ),
             ),
             Text(
-              'Hotel Budget: \$${_hotelBudget.toStringAsFixed(0)}',
+              'Hotel Budget: \RM ${_hotelBudget.toStringAsFixed(0)}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 19.0, // Adjust the font weight
