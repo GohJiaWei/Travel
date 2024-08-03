@@ -16,8 +16,10 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   final locationController = Location();
+
   DBService db = DBService();
-  List<int> _items = List.generate(10, (index) => index); // List to manage items
+  List<int> _items =
+      List.generate(10, (index) => index); // List to manage items
 
   LatLng? currentPosition;
   Map<PolylineId, Polyline> polylines = {};
@@ -36,12 +38,10 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void didUpdateWidget(covariant SchedulePage oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    
   }
+
   @override
   Widget build(BuildContext context) {
-    double total = 0;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -52,6 +52,7 @@ class _SchedulePageState extends State<SchedulePage> {
           FutureBuilder(
               future: db.fetchSchedule(widget.id),
               builder: (context, snapshot) {
+                double total = 0;
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
@@ -108,7 +109,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                 return Column(
                                   children: [
                                     Text(
-                                      index == 0 ? 'Day 1': 'Day 2',
+                                      index == 0 ? 'Day 1' : 'Day 2',
                                       style: TextStyle(fontSize: 20),
                                     ),
                                     Dismissible(
@@ -117,30 +118,32 @@ class _SchedulePageState extends State<SchedulePage> {
                                       direction: DismissDirection
                                           .startToEnd, // Swipe direction
                                       onDismissed: (direction) async {
-
                                         // Show confirmation dialog
                                         bool replace =
                                             await _showConfirmationDialog(
                                                 context);
-                                        db.deleteLocation(locations[index]['Loc_id'], locations[index]['Schedule_id']);
+                                        db.deleteLocation(
+                                            locations[index]['Loc_id'],
+                                            locations[index]['Schedule_id']);
 
                                         if (replace) {
                                           // Show location selection dialog
                                           int? selectedLocation =
                                               await _showLocationSelectionDialog(
-                                                  context, db.addLocation, locations[index]['Schedule_id']);
+                                                  context,
+                                                  db.addLocation,
+                                                  locations[index]
+                                                      ['Schedule_id']);
                                           if (selectedLocation != null) {
                                             setState(() {
                                               // Replace the item with the new location
                                               _items[index] = selectedLocation;
                                             });
                                           }
-
                                         } else {
                                           setState(() {
                                             // Remove item from the list
                                             _items.removeAt(index);
-
                                           });
                                         }
                                       },
@@ -157,7 +160,11 @@ class _SchedulePageState extends State<SchedulePage> {
                                       child: GestureDetector(
                                         onTap: () {
                                           Navigator.of(context).push(
-                                            MaterialPageRoute(builder: (context) => Description(Loc_id: locations[index]['Loc_id'])),
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Description(
+                                                        Loc_id: locations[index]
+                                                            ['Loc_id'])),
                                           );
                                         },
                                         child: Padding(
@@ -181,11 +188,18 @@ class _SchedulePageState extends State<SchedulePage> {
                                                       horizontal: 8),
                                                   child: ListTile(
                                                     leading: Image.asset(
-                                                      locations[index]['Loc_id'] == 6 || locations[index]['Loc_id'] == 10 ?
-                                                      'images/loc_img1/${locations[index]['Loc_id']}.jpeg' :
-                                                      locations[index]['Loc_id'] == 9 ?
-                                                      'images/loc_img1/${locations[index]['Loc_id']}.JPG'
-                                                          :'images/loc_img1/${locations[index]['Loc_id']}.jpg',
+                                                      locations[index][
+                                                                      'Loc_id'] ==
+                                                                  6 ||
+                                                              locations[index][
+                                                                      'Loc_id'] ==
+                                                                  10
+                                                          ? 'images/loc_img1/${locations[index]['Loc_id']}.jpeg'
+                                                          : locations[index][
+                                                                      'Loc_id'] ==
+                                                                  9
+                                                              ? 'images/loc_img1/${locations[index]['Loc_id']}.JPG'
+                                                              : 'images/loc_img1/${locations[index]['Loc_id']}.jpg',
                                                       width:
                                                           175.0, // Width of the image
                                                       height:
@@ -196,11 +210,11 @@ class _SchedulePageState extends State<SchedulePage> {
                                                     title: Text(locations[index]
                                                         ['Name']),
                                                     subtitle: Text(
-                                                        'RM ${locations[index]['Cost']
-                                                            .toString()}',
+                                                      'RM ${locations[index]['Cost'].toString()}',
+                                                    ),
                                                   ),
                                                 ),
-                                              ),),
+                                              ),
                                               SizedBox(height: 8),
                                             ],
                                           ),
@@ -219,13 +233,17 @@ class _SchedulePageState extends State<SchedulePage> {
                                     // Show confirmation dialog
                                     bool replace =
                                         await _showConfirmationDialog(context);
-                                    db.deleteLocation(locations[index]['Loc_id'], locations[index]['Schedule_id']);
+                                    db.deleteLocation(
+                                        locations[index]['Loc_id'],
+                                        locations[index]['Schedule_id']);
 
                                     if (replace) {
                                       // Show location selection dialog
                                       int? selectedLocation =
                                           await _showLocationSelectionDialog(
-                                              context, db.addLocation, locations[index]['Schedule_id'] );
+                                              context,
+                                              db.addLocation,
+                                              locations[index]['Schedule_id']);
                                       if (selectedLocation != null) {
                                         setState(() {
                                           // Replace the item with the new location
@@ -252,7 +270,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                   child: GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => Description(Loc_id: locations[index]['Loc_id'])),
+                                        MaterialPageRoute(
+                                            builder: (context) => Description(
+                                                Loc_id: locations[index]
+                                                    ['Loc_id'])),
                                       );
                                     },
                                     child: Padding(
@@ -276,11 +297,17 @@ class _SchedulePageState extends State<SchedulePage> {
                                                       horizontal: 8),
                                               child: ListTile(
                                                 leading: Image.asset(
-                                                  locations[index]['Loc_id'] == 6 || locations[index]['Loc_id'] == 10 ?
-                                                  'images/loc_img1/${locations[index]['Loc_id']}.jpeg' :
-                                                  locations[index]['Loc_id'] == 9 ?
-                                                  'images/loc_img1/${locations[index]['Loc_id']}.JPG'
-                                                      :'images/loc_img1/${locations[index]['Loc_id']}.jpg',
+                                                  locations[index]['Loc_id'] ==
+                                                              6 ||
+                                                          locations[index]
+                                                                  ['Loc_id'] ==
+                                                              10
+                                                      ? 'images/loc_img1/${locations[index]['Loc_id']}.jpeg'
+                                                      : locations[index]
+                                                                  ['Loc_id'] ==
+                                                              9
+                                                          ? 'images/loc_img1/${locations[index]['Loc_id']}.JPG'
+                                                          : 'images/loc_img1/${locations[index]['Loc_id']}.jpg',
                                                   width:
                                                       175.0, // Width of the image
                                                   height:
@@ -290,8 +317,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 ),
                                                 title: Text(
                                                     locations[index]['Name']),
-                                                subtitle: Text('RM ${locations[index]['Cost']
-                                                    .toString()}'),
+                                                subtitle: Text(
+                                                    'RM ${locations[index]['Cost'].toString()}'),
                                               ),
                                             ),
                                           ),
@@ -305,22 +332,16 @@ class _SchedulePageState extends State<SchedulePage> {
                             },
                             itemCount: locations.length),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 8),
+                        child: Text('Total Cost: RM ${total.toString()}',
+                            style: TextStyle(fontSize: 20)),
+                      )
                     ],
                   );
                 }
               }),
-          Padding(
-            padding: const EdgeInsets
-                .symmetric(
-                vertical: 12,
-                horizontal: 8),
-            child: Text(
-                'Total Cost: RM ${total.toString()}',
-                style: TextStyle(
-                    fontSize:20
-                )
-            ),
-          )
         ],
       ),
     );
@@ -355,7 +376,8 @@ class _SchedulePageState extends State<SchedulePage> {
         false; // Default to false if dialog is dismissed
   }
 
-  Future<int?> _showLocationSelectionDialog(BuildContext context, Function(int, int) addLocation, int scheduleId) async {
+  Future<int?> _showLocationSelectionDialog(BuildContext context,
+      Function(int, int) addLocation, int scheduleId) async {
     int selectedLocId = -1; // Default value for no selection
 
     return showDialog<int>(
@@ -382,7 +404,8 @@ class _SchedulePageState extends State<SchedulePage> {
                     RadioListTile<int>(
                       value: 10,
                       groupValue: selectedLocId,
-                      title: Text('Penang Street Art, 316, Beach St, Georgetown'),
+                      title:
+                          Text('Penang Street Art, 316, Beach St, Georgetown'),
                       onChanged: (value) {
                         setState(() {
                           selectedLocId = value!;
@@ -392,7 +415,8 @@ class _SchedulePageState extends State<SchedulePage> {
                     RadioListTile<int>(
                       value: 11,
                       groupValue: selectedLocId,
-                      title: Text('Hin Bus Depot, 31A, Jalan Gurdwara, 10300 George Town'),
+                      title: Text(
+                          'Hin Bus Depot, 31A, Jalan Gurdwara, 10300 George Town'),
                       onChanged: (value) {
                         setState(() {
                           selectedLocId = value!;
@@ -407,8 +431,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   onPressed: () {
                     addLocation(selectedLocId, scheduleId);
                     Navigator.of(context).pop(selectedLocId);
-                    setState(){
-                    };
+                    setState() {}
+                    ;
                     _showScheduledPopup(scheduleId);
                   },
                   child: Text('OK'),
@@ -420,7 +444,6 @@ class _SchedulePageState extends State<SchedulePage> {
       },
     );
   }
-
 
   Future<void> fetchLocationUpdates() async {
     bool serviceEnabled;
@@ -484,12 +507,14 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
             actions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Center the buttons
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Center the buttons
                 children: [
                   TextButton(
                     onPressed: () {
                       // Handle the 'Yes' action here
-                      Navigator.of(context).pop(true); // Pass a value to indicate 'Yes'
+                      Navigator.of(context)
+                          .pop(true); // Pass a value to indicate 'Yes'
                     },
                     child: Text(
                       'Yes',
@@ -500,7 +525,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   TextButton(
                     onPressed: () {
                       // Handle the 'No' action here
-                      Navigator.of(context).pop(false); // Pass a value to indicate 'No'
+                      Navigator.of(context)
+                          .pop(false); // Pass a value to indicate 'No'
 
                       // Show another dialog if 'No' is clicked
                       showDialog(
@@ -516,29 +542,31 @@ class _SchedulePageState extends State<SchedulePage> {
                             ),
                             actions: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center, // Center align buttons
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center align buttons
                                 children: [
                                   TextButton(
                                     onPressed: () {
                                       db.replanning(Schedule_id);
                                       Navigator.of(context).pop(true);
-                                      setState(() {
-                                        
-                                      });
+                                      setState(() {});
                                     },
                                     child: Text(
                                       'Yes',
-                                      style: TextStyle(fontSize: 18), // Adjust font size
+                                      style: TextStyle(
+                                          fontSize: 18), // Adjust font size
                                     ),
                                   ),
                                   SizedBox(width: 16), // Space between buttons
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop(false); // Return false for No
+                                      Navigator.of(context)
+                                          .pop(false); // Return false for No
                                     },
                                     child: Text(
                                       'No',
-                                      style: TextStyle(fontSize: 18), // Adjust font size
+                                      style: TextStyle(
+                                          fontSize: 18), // Adjust font size
                                     ),
                                   ),
                                 ],
@@ -546,7 +574,6 @@ class _SchedulePageState extends State<SchedulePage> {
                             ],
                           );
                         },
-
                       );
                     },
                     child: Text(
@@ -562,20 +589,13 @@ class _SchedulePageState extends State<SchedulePage> {
       ).then((result) {
         if (result != null) {
           if (result) {
-            setState(() {
-
-            });
+            setState(() {});
           } else {
-            setState(() {
-
-            });
+            setState(() {});
           }
         }
-        setState(() {
-
-        });
+        setState(() {});
       });
     });
   }
-
 }
