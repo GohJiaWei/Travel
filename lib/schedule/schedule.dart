@@ -46,12 +46,12 @@ class _SchedulePageState extends State<SchedulePage> {
                 zoom: 10,
               ),
                 markers: {
-                  const Marker(
+                  Marker(
                     markerId: MarkerId('sourceLocation'),
                     icon: BitmapDescriptor.defaultMarker,
                     position: googlePlex,
                   ),
-                  const Marker(
+                  Marker(
                     markerId: MarkerId('destinationLocation'),
                     icon: BitmapDescriptor.defaultMarker,
                     position: mountainView,

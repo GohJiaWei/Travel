@@ -259,14 +259,7 @@ class _VenueCardState extends State<VenueCard> {
                     color: isFavorited ? Colors.red : Colors.grey,
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    widget.name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis, // Clip text overflow
-                    maxLines: 1, // Set max number of lines
-                  ),
-                ),
+
               ],
             ),
           ),
