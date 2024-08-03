@@ -53,4 +53,56 @@ class DBService {
     await conn.close();
     return results;
   }
+
+  Future<List<int>> fetchLocation(List<String> selectedTags) async {
+    var conn = await openConnection();
+
+    // Construct the SQL query with placeholders
+    final sql = '''
+    SELECT DISTINCT Loc_id
+    FROM location_tag
+    WHERE tag IN (${List.filled(selectedTags.length, '?').join(', ')})
+  ''';
+
+    // Execute the query with the selected tags
+    var results = await conn.query(sql, selectedTags);
+
+    // Extract the location IDs from the results
+    List<int> locationIds = results.map((row) => row[0] as int).toList();
+
+    await conn.close();
+    return locationIds;
+  }
+
+  Future<void> addScheduleAndLocations(List<int> locationIds) async {
+    final conn = await openConnection();
+
+    try {
+      // Start a transaction
+      await conn.transaction((transaction) async {
+        // Insert a new record into the schedule table
+        var result = await transaction.query(
+          'INSERT INTO schedule (User_id) VALUES (?)',
+          [1], // Set User_id to 1
+        );
+
+        // Retrieve the auto-incremented Schedule_id
+        int? newScheduleId = result.insertId;
+
+        // Insert records into the location_schedule table
+        for (int locId in locationIds) {
+          await transaction.query(
+            'INSERT INTO location_schedule (Loc_id, Schedule_id) VALUES (?, ?)',
+            [locId, newScheduleId],
+          );
+        }
+      });
+
+      print('Schedule and locations added successfully.');
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      await conn.close();
+    }
+  }
 }

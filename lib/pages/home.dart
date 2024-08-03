@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:travel/pages/filter.dart';
+import '/services/db.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,7 +29,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   late int _currentPage;
-  List<String> _tags = ['Nature', 'Luxury', 'Adventure', 'Relaxation'];
+  final _dbService = DBService();
+  List<String> _tags = [
+    'fun',
+    'nature',
+    'culture',
+    'music',
+    'interactive',
+    'food',
+    'history',
+    'entertainment',
+    'outdoor',
+    'indoor'
+  ];
   List<String> _selectedTags = [];
   double _tripBudget = 1000.0;
   double _hotelBudget = 500.0;
@@ -99,6 +112,11 @@ class _HomePageState extends State<HomePage> {
         _startDate = result['startDate'];
         _endDate = result['endDate'];
       });
+
+      List<int> locations = await _dbService.fetchLocation(_selectedTags);
+      print('Fetched locations: $locations');
+
+      await _dbService.addScheduleAndLocations(locations);
 
       print('Selected tags: $_selectedTags');
       print('Trip Budget: \$${_tripBudget.toStringAsFixed(0)}');
