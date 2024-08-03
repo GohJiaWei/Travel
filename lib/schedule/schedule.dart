@@ -36,12 +36,15 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void didUpdateWidget(covariant SchedulePage oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     
   }
   @override
   Widget build(BuildContext context) {
+    double total = 0.0;
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           SizedBox(
             height: 60,
@@ -67,6 +70,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       'Schedule_id': row['Schedule_id'],
                       'Loc_id': row['Loc_id']
                     });
+                    total += row['Cost'];
                   }
                   return Column(
                     children: [
@@ -95,7 +99,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         height: 10,
                       ),
                       Container(
-                        height: 450,
+                        height: 425,
                         child: ListView.builder(
                             itemBuilder: (BuildContext context, int index) {
                               if (index == 0 || index == 3) {
@@ -186,11 +190,11 @@ class _SchedulePageState extends State<SchedulePage> {
                                                     title: Text(locations[index]
                                                         ['Name']),
                                                     subtitle: Text(
-                                                        locations[index]['Cost']
-                                                            .toString()),
+                                                        'RM ${locations[index]['Cost']
+                                                            .toString()}',
                                                   ),
                                                 ),
-                                              ),
+                                              ),),
                                               SizedBox(height: 8),
                                             ],
                                           ),
@@ -296,6 +300,18 @@ class _SchedulePageState extends State<SchedulePage> {
                   );
                 }
               }),
+          Padding(
+            padding: const EdgeInsets
+                .symmetric(
+                vertical: 12,
+                horizontal: 8),
+            child: Text(
+                'Total Cost: RM ${total.toString()}',
+                style: TextStyle(
+                    fontSize:20
+                )
+            ),
+          )
         ],
       ),
     );
