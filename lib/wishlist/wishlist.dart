@@ -9,16 +9,17 @@ class WishlistPage extends StatefulWidget {
 
 class _WishlistPageState extends State<WishlistPage> {
   final List<String> tourismSpots = [
-    'Penang Hill',
-    'Batu Ferringhi Beach',
-    'Kek Lok Si Temple',
-    'Penang Street Art',
+    'Pulau Tioman, Pahang',
+    'A Famosa, Melaka',
+    'River Walk, Melaka',
+    
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Tourism Wishlist'),
       ),
       body: Center(

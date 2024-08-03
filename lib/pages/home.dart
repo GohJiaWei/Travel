@@ -16,7 +16,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   late int _currentPage;
-  List<String> _tags = ['Nature', 'Luxury', 'Adventure', 'Relaxation'];
+  List<String> _tags = [
+    'Nature',
+    'Fun',
+    'Culture',
+    'Music',
+    'Interactive',
+    'Food',
+    'History',
+    'Entertainment',
+    'Outdoor',
+    'Indoor'
+  ];
   List<String> _selectedTags = [];
   double _tripBudget = 1000.0;
   double _hotelBudget = 500.0;
@@ -88,12 +99,12 @@ class _HomePageState extends State<HomePage> {
         _endDate = result['endDate'];
       });
 
-      print('Selected tags: $_selectedTags');
-      print('Trip Budget: \$${_tripBudget.toStringAsFixed(0)}');
-      print('Hotel Budget: \$${_hotelBudget.toStringAsFixed(0)}');
-      print('Selected State: $_selectedState');
-      print(
-          'Trip Dates: ${_startDate?.toLocal().toString().split(' ')[0]} to ${_endDate?.toLocal().toString().split(' ')[0]}');
+      // print('Selected tags: $_selectedTags');
+      // print('Trip Budget: \$${_tripBudget.toStringAsFixed(0)}');
+      // print('Hotel Budget: \$${_hotelBudget.toStringAsFixed(0)}');
+      // print('Selected State: $_selectedState');
+      // print(
+      //     'Trip Dates: ${_startDate?.toLocal().toString().split(' ')[0]} to ${_endDate?.toLocal().toString().split(' ')[0]}');
     }
   }
 
@@ -169,13 +180,7 @@ class _HomePageState extends State<HomePage> {
                       final imagePath = _imagePaths[index];
                       return Container(
                         margin: EdgeInsets.symmetric(horizontal: 20.0),
-                        // decoration: BoxDecoration(
-                        //   border: Border.all(
-                        //   color: Colors.black, // Outline color
-                        //   width: 1.0, // Outline width
-                        // ),),
                         child: ClipRRect(
-                          // borderRadius: BorderRadius.circular(12.0),
                           child: Image.asset(
                             imagePath,
                             fit: BoxFit.cover,
@@ -226,16 +231,16 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   VenueCard(
-                    imageUrl: 'images/login.png',
-                    name: 'Batu Ferringhi, Penang',
-                  ),
-                  VenueCard(
-                    imageUrl: 'images/login.png',
-                    name: 'Sg. Siput, Perak',
-                  ),
-                  VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/TiomanIsland.jpg',
                     name: 'Pulau Tioman, Pahang',
+                  ),
+                  VenueCard(
+                    imageUrl: 'images/KekLongTong.jpg',
+                    name: 'Kek Lok Tong Cave Temple, Ipoh',
+                  ),
+                  VenueCard(
+                    imageUrl: 'images/BatuFerringhi.jpg',
+                    name: 'Batu Ferringhi, Penang',
                   ),
                 ],
               ),
@@ -254,15 +259,15 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/AFamosa.jpg',
                     name: 'A Famosa',
                   ),
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/RiverWalk.jpg',
                     name: 'River Walk',
                   ),
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/NyonyaVillage.jpg',
                     name: 'Nyonya Village Melaka',
                   ),
                 ],
@@ -306,7 +311,7 @@ class _VenueCardState extends State<VenueCard> {
   Widget build(BuildContext context) {
     // Get the screen width and height from MediaQuery
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    // final screenHeight = MediaQuery.of(context).size.height;
 
     // Set a fixed width for the container as a percentage of the screen width
     final containerWidth =
