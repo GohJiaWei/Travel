@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:travel/pages/filter.dart';
-
+import 'package:travel/services/db.dart';
 
 class HomePage extends StatefulWidget {
   int id;
@@ -16,17 +16,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   late int _currentPage;
+  final _dbService = DBService();
   List<String> _tags = [
-    'Nature',
-    'Fun',
-    'Culture',
-    'Music',
-    'Interactive',
-    'Food',
-    'History',
-    'Entertainment',
-    'Outdoor',
-    'Indoor'
+    'fun',
+    'nature',
+    'culture',
+    'music',
+    'interactive',
+    'food',
+    'history',
+    'entertainment',
+    'outdoor',
+    'indoor'
   ];
   List<String> _selectedTags = [];
   double _tripBudget = 1000.0;
@@ -99,12 +100,17 @@ class _HomePageState extends State<HomePage> {
         _endDate = result['endDate'];
       });
 
-      // print('Selected tags: $_selectedTags');
-      // print('Trip Budget: \$${_tripBudget.toStringAsFixed(0)}');
-      // print('Hotel Budget: \$${_hotelBudget.toStringAsFixed(0)}');
-      // print('Selected State: $_selectedState');
-      // print(
-      //     'Trip Dates: ${_startDate?.toLocal().toString().split(' ')[0]} to ${_endDate?.toLocal().toString().split(' ')[0]}');
+      List<int> locations = await _dbService.fetchLocation(_selectedTags);
+      print('Fetched locations: $locations');
+
+      await _dbService.addScheduleAndLocations(locations);
+
+      print('Selected tags: $_selectedTags');
+      print('Trip Budget: \$${_tripBudget.toStringAsFixed(0)}');
+      print('Hotel Budget: \$${_hotelBudget.toStringAsFixed(0)}');
+      print('Selected State: $_selectedState');
+      print(
+          'Trip Dates: ${_startDate?.toLocal().toString().split(' ')[0]} to ${_endDate?.toLocal().toString().split(' ')[0]}');
     }
   }
 
@@ -169,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                   child: PageView.builder(
                     controller: _pageController,
                     itemCount:
-                    _imagePaths.length, // Use length of imagePaths list
+                        _imagePaths.length, // Use length of imagePaths list
                     onPageChanged: (index) {
                       setState(() {
                         _currentPage = index;
@@ -332,7 +338,7 @@ class _VenueCardState extends State<VenueCard> {
               widget.imageUrl,
               width: containerWidth, // Make the image fill the container width
               height:
-              imageHeight, // Set the height as a proportion of the container width
+                  imageHeight, // Set the height as a proportion of the container width
               fit: BoxFit.cover,
             ),
             Padding(
@@ -352,7 +358,7 @@ class _VenueCardState extends State<VenueCard> {
                     child: Text(
                       widget.name,
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       overflow: TextOverflow.visible, // Allows text to wrap
                       softWrap: true, // Enables text wrapping
                     ),
