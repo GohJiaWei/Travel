@@ -100,12 +100,12 @@ class _HomePageState extends State<HomePage> {
         _endDate = result['endDate'];
       });
 
-      print('Selected tags: $_selectedTags');
-      print('Trip Budget: \$${_tripBudget.toStringAsFixed(0)}');
-      print('Hotel Budget: \$${_hotelBudget.toStringAsFixed(0)}');
-      print('Selected State: $_selectedState');
-      print(
-          'Trip Dates: ${_startDate?.toLocal().toString().split(' ')[0]} to ${_endDate?.toLocal().toString().split(' ')[0]}');
+      // print('Selected tags: $_selectedTags');
+      // print('Trip Budget: \$${_tripBudget.toStringAsFixed(0)}');
+      // print('Hotel Budget: \$${_hotelBudget.toStringAsFixed(0)}');
+      // print('Selected State: $_selectedState');
+      // print(
+      //     'Trip Dates: ${_startDate?.toLocal().toString().split(' ')[0]} to ${_endDate?.toLocal().toString().split(' ')[0]}');
     }
   }
 
@@ -181,13 +181,7 @@ class _HomePageState extends State<HomePage> {
                       final imagePath = _imagePaths[index];
                       return Container(
                         margin: EdgeInsets.symmetric(horizontal: 20.0),
-                        // decoration: BoxDecoration(
-                        //   border: Border.all(
-                        //   color: Colors.black, // Outline color
-                        //   width: 1.0, // Outline width
-                        // ),),
                         child: ClipRRect(
-                          // borderRadius: BorderRadius.circular(12.0),
                           child: Image.asset(
                             imagePath,
                             fit: BoxFit.cover,
@@ -238,16 +232,16 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   VenueCard(
-                    imageUrl: 'images/login.png',
-                    name: 'Batu Ferringhi, Penang',
-                  ),
-                  VenueCard(
-                    imageUrl: 'images/login.png',
-                    name: 'Sg. Siput, Perak',
-                  ),
-                  VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/TiomanIsland.jpg',
                     name: 'Pulau Tioman, Pahang',
+                  ),
+                  VenueCard(
+                    imageUrl: 'images/KekLongTong.jpg',
+                    name: 'Kek Lok Tong Cave Temple, Ipoh',
+                  ),
+                  VenueCard(
+                    imageUrl: 'images/BatuFerringhi.jpg',
+                    name: 'Batu Ferringhi, Penang',
                   ),
                 ],
               ),
@@ -266,15 +260,15 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/AFamosa.jpg',
                     name: 'A Famosa',
                   ),
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/RiverWalk.jpg',
                     name: 'River Walk',
                   ),
                   VenueCard(
-                    imageUrl: 'images/login.png',
+                    imageUrl: 'images/NyonyaVillage.jpg',
                     name: 'Nyonya Village Melaka',
                   ),
                 ],
