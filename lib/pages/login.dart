@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:travel/homescreen.dart';
 import '/services/db.dart';
 import 'signup.dart';
-import 'home.dart'; // Import home.dart
 
 class LoginScreen extends StatefulWidget {
   @override
