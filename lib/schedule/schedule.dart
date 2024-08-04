@@ -43,329 +43,341 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          SizedBox(
-            height: 60,
-          ),
-          FutureBuilder(
-              future: db.fetchSchedule(widget.id),
-              builder: (context, snapshot) {
-                double total = 0;
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No locations found'));
-                } else {
-                  final data = snapshot.data;
-                  List<Map<String, dynamic>> locations = [];
-                  for (var row in data!) {
-                    locations.add({
-                      'Name': row['Name'],
-                      'Cost': row['Cost'],
-                      'Longitude': row['Longitude'],
-                      'Latitude': row['Latitude'],
-                      'Schedule_id': row['Schedule_id'],
-                      'Loc_id': row['Loc_id']
-                    });
-                    total += row['Cost'];
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(
+              height: 60,
+            ),
+            FutureBuilder(
+                future: db.fetchSchedule(widget.id),
+                builder: (context, snapshot) {
+                  double total = 0;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No locations found'));
+                  } else {
+                    final data = snapshot.data;
+                    List<Map<String, dynamic>> locations = [];
+                    for (var row in data!) {
+                      locations.add({
+                        'Name': row['Name'],
+                        'Cost': row['Cost'],
+                        'Longitude': row['Longitude'],
+                        'Latitude': row['Latitude'],
+                        'Schedule_id': row['Schedule_id'],
+                        'Loc_id': row['Loc_id']
+                      });
+                      total += row['Cost'];
 
-                    print(total);
-                  }
-                  return Column(
-                    children: [
-                      Center(
-                        child: Container(
-                          width: 400,
-                          height: 200,
-                          child: GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(locations[0]['Longitude'],
-                                  locations[0]['Latitude']),
-                              zoom: 10,
-                            ),
-                            markers: {
-                              Marker(
-                                markerId: MarkerId('sourceLocation'),
-                                icon: BitmapDescriptor.defaultMarker,
-                                position: LatLng(locations[0]['Longitude'],
+                      print(total);
+                    }
+                    return Column(
+                      children: [
+                        Center(
+                          child: Container(
+                            width: 400,
+                            height: 200,
+                            child: GoogleMap(
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(locations[0]['Longitude'],
                                     locations[0]['Latitude']),
-                              )
-                            },
+                                zoom: 10,
+                              ),
+                              markers: {
+                                Marker(
+                                  markerId: MarkerId('sourceLocation'),
+                                  icon: BitmapDescriptor.defaultMarker,
+                                  position: LatLng(locations[0]['Longitude'],
+                                      locations[0]['Latitude']),
+                                )
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 425,
-                        child: ListView.builder(
-                            itemBuilder: (BuildContext context, int index) {
-                              if (index == 0 || index == 3) {
-                                return Column(
-                                  children: [
-                                    Text(
-                                      index == 0 ? 'Day 1' : 'Day 2',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Dismissible(
-                                      key: Key(locations[index]['Name']
-                                          .toString()), // Unique key for each item
-                                      direction: DismissDirection
-                                          .startToEnd, // Swipe direction
-                                      onDismissed: (direction) async {
-                                        // Show confirmation dialog
-                                        bool replace =
-                                            await _showConfirmationDialog(
-                                                context);
-                                        db.deleteLocation(
-                                            locations[index]['Loc_id'],
-                                            locations[index]['Schedule_id']);
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 425,
+                          child: ListView.builder(
+                              itemBuilder: (BuildContext context, int index) {
+                                if (index == 0 || index == 3) {
+                                  return Column(
+                                    children: [
+                                      Text(
+                                        index == 0 ? 'Day 1' : 'Day 2',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Dismissible(
+                                        key: Key(locations[index]['Name']
+                                            .toString()), // Unique key for each item
+                                        direction: DismissDirection
+                                            .startToEnd, // Swipe direction
+                                        onDismissed: (direction) async {
+                                          // Show confirmation dialog
+                                          bool replace =
+                                              await _showConfirmationDialog(
+                                                  context);
+                                          db.deleteLocation(
+                                              locations[index]['Loc_id'],
+                                              locations[index]['Schedule_id']);
 
-                                        if (replace) {
-                                          // Show location selection dialog
-                                          int? selectedLocation =
-                                              await _showLocationSelectionDialog(
-                                                  context,
-                                                  db.addLocation,
-                                                  locations[index]
-                                                      ['Schedule_id']);
-                                          if (selectedLocation != null) {
+                                          if (replace) {
+                                            // Show location selection dialog
+                                            int? selectedLocation =
+                                                await _showLocationSelectionDialog(
+                                                    context,
+                                                    db.addLocation,
+                                                    locations[index]
+                                                        ['Schedule_id']);
+                                            if (selectedLocation != null) {
+                                              setState(() {
+                                                // Replace the item with the new location
+                                                _items[index] =
+                                                    selectedLocation;
+                                              });
+                                            }
+                                          } else {
                                             setState(() {
-                                              // Replace the item with the new location
-                                              _items[index] = selectedLocation;
+                                              // Remove item from the list
+                                              _items.removeAt(index);
                                             });
                                           }
-                                        } else {
-                                          setState(() {
-                                            // Remove item from the list
-                                            _items.removeAt(index);
-                                          });
-                                        }
-                                      },
-                                      background: Container(
-                                        color: Colors
-                                            .red, // Background color when swiping
-                                        alignment: Alignment.centerLeft,
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Description(
-                                                        Loc_id: locations[index]
-                                                            ['Loc_id'])),
-                                          );
                                         },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(height: 3),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color:
-                                                          Colors.grey.shade400,
-                                                      spreadRadius: 1.2,
-                                                      blurRadius: 1.0,
-                                                      offset: Offset(0, 3),
-                                                    ),
-                                                  ],
-                                                  color: Colors.grey.shade200,
-                                                  // color: Color(0xFF97AFB8),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 12,
-                                                      horizontal: 8),
-                                                  child: ListTile(
-                                                    leading: Image.asset(
-                                                      locations[index][
-                                                                      'Loc_id'] ==
-                                                                  6 ||
-                                                              locations[index][
-                                                                      'Loc_id'] ==
-                                                                  10
-                                                          ? 'images/loc_img1/${locations[index]['Loc_id']}.jpeg'
-                                                          : locations[index][
-                                                                      'Loc_id'] ==
-                                                                  9
-                                                              ? 'images/loc_img1/${locations[index]['Loc_id']}.JPG'
-                                                              : 'images/loc_img1/${locations[index]['Loc_id']}.jpg',
-                                                      width:
-                                                          175.0, // Width of the image
-                                                      height:
-                                                          250.0, // Height of the image
-                                                      fit: BoxFit
-                                                          .cover, // How the image should be inscribed into the box
-                                                    ),
-                                                    title: Text(locations[index]
-                                                        ['Name']),
-                                                    subtitle: Text(
-                                                      'RM ${locations[index]['Cost'].toString()}',
+                                        background: Container(
+                                          color: Colors
+                                              .red, // Background color when swiping
+                                          alignment: Alignment.centerLeft,
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Description(
+                                                          Loc_id:
+                                                              locations[index]
+                                                                  ['Loc_id'])),
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(height: 3),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors
+                                                            .grey.shade400,
+                                                        spreadRadius: 1.2,
+                                                        blurRadius: 1.0,
+                                                        offset: Offset(0, 3),
+                                                      ),
+                                                    ],
+                                                    color: Colors.grey.shade200,
+                                                    // color: Color(0xFF97AFB8),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 12,
+                                                        horizontal: 8),
+                                                    child: ListTile(
+                                                      leading: Image.asset(
+                                                        locations[index][
+                                                                        'Loc_id'] ==
+                                                                    6 ||
+                                                                locations[index]
+                                                                        [
+                                                                        'Loc_id'] ==
+                                                                    10
+                                                            ? 'images/loc_img1/${locations[index]['Loc_id']}.jpeg'
+                                                            : locations[index][
+                                                                        'Loc_id'] ==
+                                                                    9
+                                                                ? 'images/loc_img1/${locations[index]['Loc_id']}.JPG'
+                                                                : 'images/loc_img1/${locations[index]['Loc_id']}.jpg',
+                                                        width:
+                                                            175.0, // Width of the image
+                                                        height:
+                                                            250.0, // Height of the image
+                                                        fit: BoxFit
+                                                            .cover, // How the image should be inscribed into the box
+                                                      ),
+                                                      title: Text(
+                                                          locations[index]
+                                                              ['Name']),
+                                                      subtitle: Text(
+                                                        'RM ${locations[index]['Cost'].toString()}',
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 20),
-                                            ],
+                                                SizedBox(height: 20),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                );
-                              } else {
-                                return Dismissible(
-                                  key: Key(locations[index]['Name']
-                                      .toString()), // Unique key for each item
-                                  direction: DismissDirection
-                                      .startToEnd, // Swipe direction
-                                  onDismissed: (direction) async {
-                                    // Show confirmation dialog
-                                    bool replace =
-                                        await _showConfirmationDialog(context);
-                                    db.deleteLocation(
-                                        locations[index]['Loc_id'],
-                                        locations[index]['Schedule_id']);
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Dismissible(
+                                    key: Key(locations[index]['Name']
+                                        .toString()), // Unique key for each item
+                                    direction: DismissDirection
+                                        .startToEnd, // Swipe direction
+                                    onDismissed: (direction) async {
+                                      // Show confirmation dialog
+                                      bool replace =
+                                          await _showConfirmationDialog(
+                                              context);
+                                      db.deleteLocation(
+                                          locations[index]['Loc_id'],
+                                          locations[index]['Schedule_id']);
 
-                                    if (replace) {
-                                      // Show location selection dialog
-                                      int? selectedLocation =
-                                          await _showLocationSelectionDialog(
-                                              context,
-                                              db.addLocation,
-                                              locations[index]['Schedule_id']);
-                                      if (selectedLocation != null) {
+                                      if (replace) {
+                                        // Show location selection dialog
+                                        int? selectedLocation =
+                                            await _showLocationSelectionDialog(
+                                                context,
+                                                db.addLocation,
+                                                locations[index]
+                                                    ['Schedule_id']);
+                                        if (selectedLocation != null) {
+                                          setState(() {
+                                            // Replace the item with the new location
+                                            _items[index] = selectedLocation;
+                                          });
+                                        }
+                                      } else {
                                         setState(() {
-                                          // Replace the item with the new location
-                                          _items[index] = selectedLocation;
+                                          // Remove item from the list
+                                          _items.removeAt(index);
                                         });
                                       }
-                                    } else {
-                                      setState(() {
-                                        // Remove item from the list
-                                        _items.removeAt(index);
-                                      });
-                                    }
-                                  },
-                                  background: Container(
-                                    color: Colors
-                                        .red, // Background color when swiping
-                                    alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(left: 20),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => Description(
-                                                Loc_id: locations[index]
-                                                    ['Loc_id'])),
-                                      );
                                     },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 3),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey.shade400,
-                                                  spreadRadius: 1.2,
-                                                  blurRadius: 1.0,
-                                                  offset: Offset(0, 3),
-                                                ),
-                                              ],
-                                              color: Colors.grey.shade200,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 8),
-                                              child: ListTile(
-                                                leading: Image.asset(
-                                                  locations[index]['Loc_id'] ==
-                                                              6 ||
-                                                          locations[index]
-                                                                  ['Loc_id'] ==
-                                                              10
-                                                      ? 'images/loc_img1/${locations[index]['Loc_id']}.jpeg'
-                                                      : locations[index]
-                                                                  ['Loc_id'] ==
-                                                              9
-                                                          ? 'images/loc_img1/${locations[index]['Loc_id']}.JPG'
-                                                          : 'images/loc_img1/${locations[index]['Loc_id']}.jpg',
-                                                  width:
-                                                      175.0, // Width of the image
-                                                  height:
-                                                      250.0, // Height of the image
-                                                  fit: BoxFit
-                                                      .cover, // How the image should be inscribed into the box
-                                                ),
-                                                title: Text(
-                                                    locations[index]['Name']),
-                                                subtitle: Text(
-                                                    'RM ${locations[index]['Cost'].toString()}'),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 20),
-                                        ],
+                                    background: Container(
+                                      color: Colors
+                                          .red, // Background color when swiping
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                  ),
-                                );
-                              }
-                            },
-                            itemCount: locations.length),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 8),
-                        child: Text('Total Cost: RM ${total.toString()}',
-                            style: TextStyle(fontSize: 20)),
-                      )
-                    ],
-                  );
-                }
-              }),
-        ],
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => Description(
+                                                  Loc_id: locations[index]
+                                                      ['Loc_id'])),
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: 3),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.shade400,
+                                                    spreadRadius: 1.2,
+                                                    blurRadius: 1.0,
+                                                    offset: Offset(0, 3),
+                                                  ),
+                                                ],
+                                                color: Colors.grey.shade200,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 8),
+                                                child: ListTile(
+                                                  leading: Image.asset(
+                                                    locations[index][
+                                                                    'Loc_id'] ==
+                                                                6 ||
+                                                            locations[index][
+                                                                    'Loc_id'] ==
+                                                                10
+                                                        ? 'images/loc_img1/${locations[index]['Loc_id']}.jpeg'
+                                                        : locations[index][
+                                                                    'Loc_id'] ==
+                                                                9
+                                                            ? 'images/loc_img1/${locations[index]['Loc_id']}.JPG'
+                                                            : 'images/loc_img1/${locations[index]['Loc_id']}.jpg',
+                                                    width:
+                                                        175.0, // Width of the image
+                                                    height:
+                                                        250.0, // Height of the image
+                                                    fit: BoxFit
+                                                        .cover, // How the image should be inscribed into the box
+                                                  ),
+                                                  title: Text(
+                                                      locations[index]['Name']),
+                                                  subtitle: Text(
+                                                      'RM ${locations[index]['Cost'].toString()}'),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 20),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              itemCount: locations.length),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 8),
+                          child: Text('Total Cost: RM ${total.toString()}',
+                              style: TextStyle(fontSize: 20)),
+                        ),
+                        SizedBox(height: 200),
+                      ],
+                    );
+                  }
+                }),
+          ],
+        ),
       ),
     );
   }
