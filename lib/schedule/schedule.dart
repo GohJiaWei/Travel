@@ -110,7 +110,12 @@ class _SchedulePageState extends State<SchedulePage> {
                                   children: [
                                     Text(
                                       index == 0 ? 'Day 1' : 'Day 2',
-                                      style: TextStyle(fontSize: 20),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
                                     ),
                                     Dismissible(
                                       key: Key(locations[index]['Name']
@@ -177,9 +182,19 @@ class _SchedulePageState extends State<SchedulePage> {
                                               SizedBox(height: 3),
                                               Container(
                                                 decoration: BoxDecoration(
-                                                  color: Color(0xFFBFB4AD),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color:
+                                                          Colors.grey.shade400,
+                                                      spreadRadius: 1.2,
+                                                      blurRadius: 1.0,
+                                                      offset: Offset(0, 3),
+                                                    ),
+                                                  ],
+                                                  color: Colors.grey.shade200,
+                                                  // color: Color(0xFF97AFB8),
                                                   borderRadius:
-                                                      BorderRadius.circular(20),
+                                                      BorderRadius.circular(8),
                                                 ),
                                                 child: Padding(
                                                   padding: const EdgeInsets
@@ -215,7 +230,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(height: 8),
+                                              SizedBox(height: 20),
                                             ],
                                           ),
                                         ),
@@ -286,9 +301,17 @@ class _SchedulePageState extends State<SchedulePage> {
                                           SizedBox(height: 3),
                                           Container(
                                             decoration: BoxDecoration(
-                                              color: Color(0xFFBFB4AD),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.shade400,
+                                                  spreadRadius: 1.2,
+                                                  blurRadius: 1.0,
+                                                  offset: Offset(0, 3),
+                                                ),
+                                              ],
+                                              color: Colors.grey.shade200,
                                               borderRadius:
-                                                  BorderRadius.circular(20),
+                                                  BorderRadius.circular(8),
                                             ),
                                             child: Padding(
                                               padding:
@@ -322,7 +345,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 8),
+                                          SizedBox(height: 20),
                                         ],
                                       ),
                                     ),

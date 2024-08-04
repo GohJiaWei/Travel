@@ -38,8 +38,9 @@ class _ChatBotPageState extends State<ChatBotPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           AppBar(
-            toolbarHeight: 80,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Color(0xFF97AFB8),
+            toolbarHeight: 80.0,
+            automaticallyImplyLeading: false,
             title: const Row(
               children: [
                 CircleAvatar(
@@ -56,9 +57,9 @@ class _ChatBotPageState extends State<ChatBotPage> {
                     Text(
                       'AI Chat Bot',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 120, 120, 120),
+                          color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: 22),
+                          fontSize: 24),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,7 +67,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
                       children: [
                         CircleAvatar(
                           radius: 6,
-                          backgroundColor: Colors.green,
+                          backgroundColor: Color.fromARGB(255, 96, 240, 39),
                         ),
                         SizedBox(
                           width: 5,
@@ -74,7 +75,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
                         Text(
                           'Online',
                           style: TextStyle(
-                              color: Colors.green,
+                              color: Color.fromARGB(255, 96, 240, 39),
                               fontSize: 17,
                               fontWeight: FontWeight.w600),
                         ),

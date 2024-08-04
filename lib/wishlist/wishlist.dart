@@ -12,7 +12,6 @@ class _WishlistPageState extends State<WishlistPage> {
     'Pulau Tioman, Pahang',
     'A Famosa, Melaka',
     'River Walk, Melaka',
-    
   ];
 
   @override
@@ -20,10 +19,17 @@ class _WishlistPageState extends State<WishlistPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Tourism Wishlist'),
+        title: Text(
+          'Tourism Wishlist',
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.w600, color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF97AFB8),
+        toolbarHeight: 80.0,
       ),
       body: Center(
         child: ListView.builder(
+          padding: EdgeInsets.only(top: 20),
           itemCount: tourismSpots.length,
           itemBuilder: (context, index) {
             return Container(

@@ -44,8 +44,8 @@ class CurvedNavBar extends StatelessWidget {
                       iconData,
                       size: isSelected ? 35 : 28,
                       color: isSelected
-                          ? Color.fromARGB(255, 124, 187, 221)
-                          : const Color.fromARGB(255, 170, 200, 200),
+                          ? Color.fromARGB(255, 33, 138, 194)
+                          : Color.fromARGB(255, 127, 160, 194),
                     ),
                     if (isSelected)
                       Positioned.fill(
